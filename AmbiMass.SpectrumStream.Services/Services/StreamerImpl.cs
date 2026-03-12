@@ -32,10 +32,11 @@ namespace AmbiMass.SpectrumStream.Services.Services
 
             _signalRHub.scanStarted( new ScanStarted
                 {
-                    ScanId = scanNumber,
-                    Count = scanData.MassList.Count,
-                    TotalBytes = payload.Length,
-                    TotalChunks = totalChunks
+                    scanId = scanNumber,
+                    count = scanData.MassList.Count,
+                    totalBytes = payload.Length,
+                    totalChunks = totalChunks,
+                    chunkSize = ChunkSizeBytes
                 });
 
             for (int chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++)
@@ -51,12 +52,12 @@ namespace AmbiMass.SpectrumStream.Services.Services
 
                     _signalRHub.scanChunk(new ScanChunk()
                     {
-                        ScanId = scanNumber,
-                        ChunkIndex = chunkIndex,
-                        TotalChunks = totalChunks,
-                        ChunkLength = len,
-                        ItemsInChunk = len / 24,
-                        Data = chunk
+                        scanId = scanNumber,
+                        chunkIndex = chunkIndex,
+                        totalChunks = totalChunks,
+                        chunkLength = len,
+                        itemsInChunk = len / 24,
+                        data = chunk
                     });
                 }
                 finally
@@ -67,7 +68,7 @@ namespace AmbiMass.SpectrumStream.Services.Services
 
             _signalRHub.scanCompleted(new ScanCompleted()
             {
-                ScanId = scanNumber,
+                scanId = scanNumber,
             });
         }
 

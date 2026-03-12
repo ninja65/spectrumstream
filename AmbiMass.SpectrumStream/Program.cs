@@ -51,7 +51,7 @@ builder.Services.AddSignalR(options =>
 
 var app = builder.Build();
 
-var hubPath = builder.Configuration["SignalR:HubPath"] ?? "/statusHub";
+var hubPath = builder.Configuration["SignalR:HubPath"] ?? "/scanhub";
 
 app.MapGet("/", () => Results.Ok(new
 {

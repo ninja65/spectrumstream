@@ -8,14 +8,14 @@ namespace AmbiMass.SpectrumStream.Data.RealtimeData
 {
     public class ScanChunk
     {
-         public int ScanId{ get; set; }
-         public int ChunkIndex{ get; set; }
-         public int TotalChunks{ get; set; }
+         public int scanId{ get; set; }
+         public int chunkIndex{ get; set; }
+         public int totalChunks{ get; set; }
 
-         public int ChunkLength { get; set; }
+         public int chunkLength { get; set; }
 
-         public int ItemsInChunk { get; set; }
+         public int itemsInChunk { get; set; }
 
-         public byte[] Data{ get; set; }
+         public byte[] data{ get; set; }
     }
 }
