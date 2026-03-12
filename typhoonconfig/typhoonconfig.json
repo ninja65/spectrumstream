@@ -1,0 +1,10 @@
+{
+    "UseSimulatedInstrument": false,
+
+    "EndPointUri": "tcp://buildroot:7777",
+
+    "StartupTyphoon": false,
+
+    "NumberOfTyphoonRetryTestConnections": 10
+
+}

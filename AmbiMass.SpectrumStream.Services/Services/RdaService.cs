@@ -197,11 +197,7 @@ namespace AmbiMass.SpectrumStream.Services.Services
         }
         private TyphoonClientConfiguration loadTyphoonConfig()
         {
-#if DEBUG
-            var settingsFile = _sysEnvironment.fullPathFromExe("typhoonconfig.debug.json");
-#else
             var settingsFile = _sysEnvironment.fullPathFromExe("typhoonconfig.json");
-#endif
             var typhoonConfig = _sysEnvironment.fileExist(settingsFile) ? _jsonLoader.loadFromFile<TyphoonClientConfiguration>(settingsFile) : new TyphoonClientConfiguration()
             {
                 StartupTyphoon = false,

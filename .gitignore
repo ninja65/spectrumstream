@@ -1,0 +1,15 @@
+*.vsidx
+/.vs/AmbiMass.SpectrumStream/v17
+/.vs/ProjectEvaluation
+/AmbiMass.SpectrumStream.Contracts/bin/Debug/net9.0-windows10.0.26100.0
+/AmbiMass.SpectrumStream.Contracts/bin/Release/net9.0-windows10.0.26100.0
+net9.0
+Build
+net9.0-windows
+netcoreapp3.1
+/TyphoonClient/bin/Release/net9.0-windows10.0.26100.0
+net9.0-windows10.0.26100.0
+obj
+net8.0
+v17
+ProjectEvaluation

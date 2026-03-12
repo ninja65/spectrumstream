@@ -1,0 +1,10 @@
+{
+    "UseSimulatedInstrument": true,
+
+    "EndPointUri": "tcp://localhost:7777",
+
+    "StartupTyphoon": false,
+
+    "NumberOfTyphoonRetryTestConnections": 10
+
+}

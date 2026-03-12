@@ -1,0 +1,16 @@
+{
+"Fluidics": {
+"AutoFluidics": false,
+"IdleFlowRate": 0,
+"MinimumFluidicsVolume": 0
+},
+"Acquisition": {
+"Type": "MS",
+"Polarity": "Negative",
+"StartMass": 50,
+"EndMass": 1100,
+"ScanTime": 1,
+"RunTime": 30000,
+"FlowRate": 150
+}
+}
