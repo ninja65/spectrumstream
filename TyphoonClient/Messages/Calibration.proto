@@ -1,0 +1,115 @@
+syntax = "proto2";
+// Protocol Buffers messages for MS calibration
+package Waters.Control.Message.Calibration;
+
+import "Timestamp.proto";
+import "TofSettings.proto";
+import "InstrumentSettings.proto";
+import "MethodReportMessages.proto";
+
+// Calibration information to be sent with analyte data
+// so that a calibrated mass mapping can be constructed
+// and expected peak widths are known
+message Calibration
+{
+	required MassMapping mapping = 1;
+	optional PeakWidthParameters peak_width_parameters = 2;
+	optional CalibrationConditions calibration_conditions = 3;
+}
+
+enum CreationAction
+{
+	CREATION_AUTOMATIC = 0;
+	CREATION_MANUAL = 1;
+}
+message Diagnostic
+{
+    repeated CalibrationTableRow table = 1;
+    repeated MethodReportItem metadata = 2;
+}
+
+message CalibrationConditions
+{
+	optional double StartMass = 1;
+	optional double EndMass = 2;
+	optional TofSettings TofSettings = 3;
+	optional QuadSettings QuadSettings = 4;
+	repeated InstrumentMode modes = 5;
+	optional CreationAction creation_type = 6 [default = CREATION_AUTOMATIC];
+	optional Timestamp run_timestamp = 7;
+	optional Timestamp check_timestamp = 8;
+	repeated InstrumentMode override_modes = 9;
+	optional string attach_mode_value = 10;
+	optional string compound_name = 11;
+    optional Diagnostic diagnostic = 12;
+}
+
+// Part of the calibration that goes with the acquisition data
+// The calibration curve is reconstructed from the information in here when required.
+message MassMapping
+{
+	required CalibrationData data = 1;
+	required CalibrationType type = 2;
+}
+
+// Type of calibration curve
+enum CurveType
+{
+	PROBABILISTIC = 0;	// Piece-wise cubic curve passing close to peaks matched to reference masses
+	POLYNOMIAL = 1;		// Polynomial (up to 5th order) curve passing close to peaks matched to reference masses
+}
+
+// Axis on which the calibration should be nearly linear
+enum AxisType
+{
+	MASS_OVER_CHARGE = 0;		// Direct m/z axis (Quads)
+	ROOT_MASS_OVER_CHARGE = 1;	// Sqrt(m/z) axis (ToFs)
+}
+
+// Reference masses which are matched to detected positions with an accompanying error-bar
+message CalibrationData
+{
+	repeated double matched_ref_mass = 1 [packed=true];
+	repeated double position = 2 [packed=true];
+	repeated double position_error_bar = 3 [packed=true];
+}
+
+// Full definition of calibration type
+// Flexibility is the integral of the squared curvature of the calibration curve
+// divided by the mass range.
+// For a PROBABLISTIC calibration, a negative input value indicates
+// that the best value should be found automatically.
+// For a POLYNOMIAL calibration, a negative input value indicates
+// that no flexibility restraint will be applied.
+message CalibrationType
+{
+	required CurveType curve_type = 1;
+	required AxisType axis_type = 2;
+	optional int32 order = 3 [default = 5];				// Polynomial order if required
+	optional double flexibility = 4 [default = -1.0];	// Flexibility
+}
+
+// Mass spectral peak width variation with position
+// For Quad data, width(position) = peak_width_offset + peak_width_gradient *  position
+// For ToF data,  width(position) = sqrt(peak_width_offset^2 + (peak_width_gradient *  position)^2))
+message PeakWidthParameters
+{
+	required AxisType axis_type = 1;		// Indicates Quad or ToF data
+	required double peak_width_offset = 2;
+	required double peak_width_gradient = 3;
+}
+
+message ReferenceMass
+{
+	optional double mz = 1;
+	optional int32 charge = 2 [default = 1];
+	optional double ccs = 3;
+	optional string composition = 4;
+}
+
+// List of reference m/z values
+message ReferenceMasses
+{
+	repeated ReferenceMass mass = 1;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto2";
+package Waters.Control.Message;
+
+message TimedEventTiming
+{
+	optional double time = 1;
+	optional double interval = 2;
+	optional bool pre_settle = 3;
+	optional bool pre_lc_trigger = 4;
+	optional bool at_lc_trigger = 5;
+	optional bool at_end = 6;
+}

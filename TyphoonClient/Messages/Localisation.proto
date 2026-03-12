@@ -1,0 +1,19 @@
+syntax = "proto2";
+package Waters.Control.Message;
+
+import "Timestamp.proto";
+
+message LocalisedText
+{
+	optional string MessageId = 1;
+	optional string Message = 2;
+	repeated LocalisedTextArgument Arguments = 3;
+}
+
+message LocalisedTextArgument
+{
+	optional string string_value = 1;
+	optional double double_value = 2;
+	optional int32 int_value = 3;
+    optional Timestamp timestamp_value = 4;
+}

@@ -1,0 +1,55 @@
+syntax = "proto2";
+package Waters.Control.Message;
+import "InstrumentSettings.proto";
+import "Timestamp.proto";
+
+message MethodReportModeSettings
+{
+	repeated InstrumentMode mode = 1;
+	repeated InstrumentSetting setting = 2;
+}
+
+message SetupData
+{
+	optional string name = 1;
+	repeated InstrumentSetting setting = 2;
+}
+
+message MethodReportItem
+{
+	required string key = 1;
+	optional double double_value = 2;
+	optional int32 int_value = 3;
+	optional bool bool_value = 4;
+	optional string string_value = 5;
+	optional Timestamp timestamp_value = 6;
+	optional bytes encoded_value = 7;
+}
+
+message MethodReportItems
+{
+	repeated MethodReportItem items = 1;
+}
+
+message CalibrationReportSettings
+{
+	optional Timestamp run_timestamp = 1;
+	repeated MethodReportItem items = 2;
+    repeated CalibrationTableRow calibration_table_rows = 3;
+}
+
+message CalibrationTableRow 
+{
+    optional double reference_mz = 1;
+    optional double measured_mz = 2;
+    optional double difference_ppm = 3;
+    optional bool matched = 4;
+}
+
+message MethodReportSettings
+{
+	// list of settings for each mode (Polarity, OpticMode, etc)
+	repeated MethodReportModeSettings item = 1;
+	optional CalibrationReportSettings calibration_report_settings = 2;
+	repeated SetupData setup_data = 3;
+}

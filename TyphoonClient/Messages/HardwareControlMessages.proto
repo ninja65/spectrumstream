@@ -1,0 +1,342 @@
+syntax = "proto2";
+package Waters.Control.Message;
+
+import "InstrumentSettings.proto";
+import "Localisation.proto";
+
+message CurrentInstrumentParameter
+{
+	optional InstParamAttribs Config = 1;
+	optional double ActiveValue = 2;
+	optional double Time = 3;
+	optional bool Active = 4;
+	optional VariantValue Value = 5;
+	repeated string Enumeration = 6;
+	repeated ModesValuePair ModesValueList = 7;
+}
+
+message CurrentMode
+{
+	optional InstrumentModeSet Config = 1;
+	optional string ActiveValue = 2;
+}
+
+message SetInstrumentParameter
+{
+	required string Name = 1;
+	required VariantValue Value = 2;
+	repeated InstrumentMode Modes = 3;
+	optional string DisplayName = 4;
+}
+
+message ModeCombination
+{
+	repeated InstrumentMode ModeStates = 1;
+}
+
+message ChangedValue
+{
+	optional VariantValue Value = 1;
+	optional VariantValue SavedValue = 2;
+}
+
+message ChangedModeValue
+{
+	required ModeCombination Mode = 1;
+	optional ChangedValue ModeValue = 2;
+}
+
+message InstrumentSettingChange
+{
+	required string Name = 1;
+	required bool Changed = 2;
+	repeated ChangedModeValue ModeValues = 3; // leave empty if setting has no mode relations
+	optional ChangedValue Value = 4;		  // if setting has mode relations this is not set
+	optional string DisplayName = 5;
+}
+
+message HardwareControlCommand
+{
+	required string Requestor = 1;
+	required string Command = 2;
+	optional string Args = 3;
+}
+
+message HardwareControlError
+{
+	required string ErrorMsg = 1;
+}
+
+message SubsystemStatus
+{
+	enum SubsysStatus
+	{
+		INIT_OK = 0;
+		INIT_FAILED = 1;
+	}
+
+	required string Subsystem = 1;
+	required SubsysStatus Status = 2;
+}
+
+message InstParamAttribs
+{
+	enum ParameterType
+	{
+		SETTING = 0;
+		READBACK = 1;
+	}
+
+	required string Name = 1;
+	optional ParameterType Type = 2;
+	optional string Units = 3;
+	optional double MaxValue = 5;
+	optional double MinValue = 6;
+	optional double DefaultValue = 7;
+	optional double Resolution = 8;
+	optional string MappingFunction = 9;
+	optional string MappingArgument = 11;
+	optional bool Visible = 14;
+
+	repeated InstrumentMode Modes = 13;
+}
+
+message InstEventAttribs
+{
+	required string Name = 1;
+	required int32 Id = 2;
+	optional bool HasValue = 3;
+	optional string ValueDescription = 4;
+	optional bool Enabled = 5;
+}
+
+message InstrumentModeSet
+{
+	required string Name = 1;
+	repeated string State = 2;
+}
+
+message ModeRelationSet
+{
+	required string Name = 1;
+	repeated string ModeName = 2;
+}
+
+message ReqInstParamAttribsList
+{
+	required string RequestorProcess = 1;
+}
+message RepInstParamAttribsList
+{
+	repeated InstParamAttribs Attribs = 1;
+}
+
+message ReqInstModesList
+{
+	required string RequestorProcess = 1;
+}
+message RepInstModesList
+{
+	repeated InstrumentModeSet Modes = 1;
+}
+
+message ReqModeRelationsList
+{
+	required string RequestorProcess = 1;
+}
+message RepModeRelationsList
+{
+	repeated ModeRelationSet Relations = 1;
+}
+
+message ReqInstEventsList
+{
+	required string RequestorProcess = 1;
+}
+message RepInstEventsList
+{
+	repeated InstEventAttribs Attribs = 1;
+}
+
+message ReqInstParamValue
+{
+	required string RequestorProcess = 1;
+	required string ParamName = 2;
+}
+message RepInstParamValue
+{
+	required string ParamName = 1;
+	optional VariantValue Value = 2;
+}
+message ReqInstParamValueById
+{
+	required string RequestorProcess = 1;
+	required int32 ParamId = 2;
+}
+message RepInstParamValueById
+{
+	required int32 ParamId = 1;
+	required double Value = 2;
+}
+
+message SetInstParamValue
+{
+	optional string RequestorProcess = 1;
+	required string ParamName = 2;
+	required VariantValue Value = 3;
+}
+
+message SetInstParamValueById
+{
+	required string RequestorProcess = 1;
+	required int32 ParamId = 2;
+	required double Value = 3;
+}
+
+message ModesValuePair
+{
+	optional VariantValue Value = 1;
+	repeated InstrumentMode Modes = 2;
+}
+
+message ModeSpecificValue
+{
+	required string ParamName = 1;
+	repeated InstrumentMode Modes = 2;
+	required VariantValue Value = 3;
+}
+
+message ModeSpecificValueLegacy
+{
+	required string ParamName = 1;
+	repeated InstrumentMode Modes = 2;
+	optional double Value = 3;
+}
+
+message MultipleSettingValues
+{
+	repeated ModeSpecificValue Values = 1;
+	optional string FileName = 2;	
+}
+
+message MultipleSettingValuesLegacy
+{
+	repeated ModeSpecificValueLegacy Values = 1;
+}
+
+message ReqAllSettingValues
+{
+	required string RequestorProcess = 1;
+}
+
+message RepAllSettingValues
+{
+	required MultipleSettingValues Settings = 1;
+}
+
+message RepAllSettingValuesLegacy
+{
+	required MultipleSettingValuesLegacy Settings = 1;
+}
+
+message SetSettingValues
+{
+	optional string RequestorProcess = 1;
+	required MultipleSettingValues Settings = 2;
+}
+
+message NamedSettingsList
+{
+	repeated string setting_name = 1;
+	optional bool active_modes_only = 2;
+}
+
+message TaggedNamedSettingsList
+{
+	optional string tag = 1;
+	optional NamedSettingsList settings = 2;
+}
+
+message ReqGetAllActiveModeStates
+{
+	required string RequestorProcess = 1;
+}
+
+message SetActiveModeStates
+{
+	optional string RequestorProcess = 1;
+	repeated InstrumentMode Modes = 2;
+}
+
+// Start of Published messages
+message NameValuePair
+{
+	required string ParamName = 1;
+	required double Value = 2;
+	optional bool IsReadback = 3;
+}
+
+message PubSettingUpdate
+{
+	repeated NameValuePair Setting = 1;
+}
+
+message PubReadbackUpdate
+{
+	required string ParamName = 1;
+	required double Value = 2;
+	required double TimeStamp = 3;
+}
+
+message PubEventUpdate
+{
+	required string EventName = 1;
+	required int32 Value = 2;
+}
+
+message PubSubsystemStatus
+{
+	required string State = 1;
+}
+
+message PubActiveModeStates
+{
+	repeated InstrumentMode Modes = 1;
+}
+
+message TrackedParameterUpdate
+{
+	required string name = 1;
+	required VariantValue value = 2;
+	required double time = 3;
+}
+
+message InstrumentInformation
+{
+	optional string name = 1;
+	optional string serial = 2;
+}
+
+message ImportExportSetting
+{
+	required string name = 1;
+	required double value = 2;
+}
+
+message ImportExportMode
+{
+	required string name = 1;
+	required string value = 2;
+}
+
+message ImportExportParams
+{
+	repeated ImportExportMode Modes = 1;
+	repeated ImportExportSetting Params = 2;
+}
+
+message ImportStatus
+{
+	required bool success = 1;
+	optional LocalisedText status = 2;
+}

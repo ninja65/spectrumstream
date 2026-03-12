@@ -1,0 +1,168 @@
+syntax = "proto2";
+package Waters.Control.Message;
+
+import "TofSettings.proto";
+import "Calibration.proto";
+import "CCSCalibration.proto";
+import "InstrumentSettings.proto";
+import "KeyValue.proto";
+import "MSMethodMessages.proto";
+
+message ScanData
+{
+	repeated ChannelData Channel = 1;
+	optional ScanHeader Header = 2;
+	optional ScanSettings Settings = 3;
+	optional KeyValueList MetaData = 4;		// This is opaque to Typhoon, it is used by the data systems.
+	optional MSMethodId MethodId = 5;
+}
+
+message ChannelData
+{
+	repeated uint32 MassIndex = 1 [packed=true];
+	repeated uint32 Intensity = 2 [packed=true];
+	repeated uint32 Flags = 3 [packed=true];
+	optional uint32 ChannelErrorFlags = 4 [default = 0];
+}
+
+message ScanHeader
+{
+	enum AcquisitionTypes {Unknown = -1; TOF = 0; IMS = 1; SCOPE = 2; HS = 3; }
+
+	optional uint64 TIC = 1;
+	optional uint32 BPI = 2;
+	optional bool AcquisitionEnd = 3;
+	optional uint32 FunctionKey = 4;
+	optional uint32 ScanNumber = 5;
+	optional double StartMass = 6;
+	optional double EndMass = 7;
+	optional double ScanTime = 8;
+	optional double InterScanDelay = 9;
+	optional double RetentionTime = 10;
+	optional double RetentionStartTime = 11;
+	optional double RetentionEndTime = 12;
+	repeated InstrumentMode Modes = 13;
+	optional string FunctionType = 14;
+	repeated string FunctionTag = 15;
+	optional bool ReferenceScan = 16;
+	optional AcquisitionTypes DataAcquisitionType = 17;
+	optional bool DropScan = 18;
+	optional bool ScanError = 19;
+	optional uint64 CorrectedTic = 20;
+	optional uint32 MethodFunctionNumber = 21;
+	optional uint32 MethodInstanceNumber = 22;
+	optional bool IsRoutedSetupScan = 23 [default=false];
+	optional uint32 SSN = 24;
+	optional uint32 DropScanCode = 25;
+	optional int32 DDABranchId = 26 [default=-1];
+}
+
+message ScanSettings
+{
+	optional TofSettings TofSettings = 1;
+	optional QuadSettings QuadSettings = 2;
+	optional Calibration.Calibration Calibration = 3;
+	optional Calibration.CalibrationData LockMass = 4;
+	optional Calibration.ReferenceMasses ReferenceMass = 5;
+	optional CCSCalibration.CCSCalibration CCSCalibration = 6;
+	optional CCSCalibration.CCSAdjustmentSettings CCSAdjustmentSettings = 7;
+    optional ExtendedStats Stats = 8;
+	optional KeyValueList MetaDataStats = 9;
+}
+
+message QuadStats
+{
+	enum WindowType { Narrow = 1; Wide = 2; }
+	optional double SetMass = 1;
+	optional WindowType QuadWindow = 2;
+	optional double UncalibratedStartMass = 3;
+	optional uint32 StartMassIndex = 4;
+	optional uint32 EndMassIndex = 5;	
+}
+
+message IMSStats
+{
+	enum WindowType { Narrow = 1; Wide = 2; }
+	optional double CCS = 1;
+	optional double DriftTimeInMS = 2;
+	optional WindowType IMSWindow = 3;
+	optional int32 ChargeState = 4;
+}
+
+message DDAStats
+{
+	required uint32 DirectedScanId = 1;
+	optional int32 ChargeState = 2;
+	optional double ProductIon = 3;
+	optional double NeutralLoss = 4;
+}
+
+message ExtendedStats
+{
+	repeated QuadStats Quad = 1;
+	repeated IMSStats IMS = 2;
+	optional DDAStats DDA = 3;
+
+	optional Ramp CollisionEnergy = 4;
+	optional double ConeVoltage = 5;
+	optional double DRE = 6;
+	optional uint32 Events = 7;
+	optional uint32 Points = 8;
+	optional bool Intense = 9;
+	optional double IMSCycle = 10;
+	optional ADCSettings ADCSettings = 11;
+	optional Ramp ConeVoltageRamp = 12;
+}
+
+message Ramp
+{
+	enum RampType { Fixed = 1; Ramped = 2; }
+	optional RampType Type = 1 [default = Fixed];
+	optional double FixedValue = 2;
+	optional double RampStart = 3;
+	optional double RampEnd = 4;
+}
+
+message ADCSettings
+{
+	enum OperateAlgorithm { ADC = 0; AVR = 1; TDC = 2; PKDET_TDC = 3; }
+	enum ADCChannel { A = 0; B = 1; DUAL = 2;}
+
+	optional OperateAlgorithm Algorithm = 1;
+	optional ADCChannel ChannelMode = 2;
+}
+
+message DataMessageTag
+{
+	required int32 PluginId = 1;
+	optional int32 SequenceId = 2;
+	optional string messageId = 3;
+	optional bytes messageData = 4;
+}
+
+message DataPacketWrapper
+{
+	optional bytes DataPacket = 1;
+	optional uint32 FunctionKey = 2;
+	optional double RetentionTime = 3;
+	optional bool AcquisitionEnd = 4;
+}
+
+enum ChromatogramType
+{
+	TIC = 0;
+	BPI = 1;
+	XIC = 2;
+}
+
+message Chromatogram
+{
+	repeated double Interval = 1;
+	repeated double Intensity = 2;
+	optional ChromatogramType Type = 3;
+}
+
+message ScanDataList
+{
+	repeated ScanData Scans = 1;
+}

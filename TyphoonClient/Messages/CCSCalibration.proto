@@ -1,0 +1,177 @@
+syntax = "proto2";
+package Waters.Control.Message.CCSCalibration;
+
+import "Timestamp.proto";
+import "TofSettings.proto";
+import "InstrumentSettings.proto";
+
+message TableRow
+{
+    required double row_value = 1;
+    repeated double cell_values = 2;
+}
+
+message LookupTable
+{
+    repeated double column_values = 1;
+    repeated TableRow rows = 2;
+}
+
+message AdjustmentConditions
+{
+	repeated InstrumentMode modes = 1;
+}
+
+message CCSAdjustmentSettings
+{
+    optional LookupTable calibration_table = 1;
+    optional LookupTable alignment_table = 2;
+	optional LookupTable hs_table = 3;
+	optional AdjustmentConditions conditions = 4;
+}
+
+message ModeCCSAdjustmentSettings
+{
+	repeated CCSAdjustmentSettings settings = 1;
+}
+
+message CCSCalibrationData
+{
+    repeated double reduced_ccs = 1;
+    repeated double mz = 2;
+    repeated double adjusted_time_ms = 3;   // measured time adjusted for non mobility transit times
+    repeated double time_error_bar = 4;
+}
+
+message MobilityPeakWidth
+{
+    optional double fwhm_offset_milliseconds = 1 [default = 0.02];
+    optional double gradient = 2 [default = 0.04];
+}
+
+message CCSCalibrationType
+{
+    optional double t0_min = 1 [default = -2.0];
+    optional double t0_max = 2 [default =  2.0];
+    optional double a_min = 3 [default = 1.0];
+    optional double a_max = 4 [default =  1000.0];
+    optional double b_min = 5 [default = 0.01];
+    optional double b_max = 6 [default =  2.0];
+	optional string mobility_gas_name = 7;
+	optional double mobility_gas_average_mass = 8;
+	optional double max_rccs_interval = 9;
+}
+
+message AcceptanceCriterion
+{
+	optional string name = 1;
+	optional string unit = 2;
+	optional double min = 3;
+	optional double max = 4;
+}
+
+message AcceptanceResult
+{
+	optional AcceptanceCriterion criterion = 1;
+	optional double value = 2;
+	optional bool pass = 3;
+}
+
+message CCSCalibrationDiagnostics
+{
+    enum CCSCalResult
+    {
+        IMS_CAL_PARAM_ERROR = 0;
+        IMS_CAL_OK = 1;
+		IMS_CAL_ACCEPTANCE_CRITERIA_FAIL = 2;
+        IMS_CAL_NOT_ENOUGH_DATA_ERROR = 3;
+        IMS_CAL_CURVE_ERROR = 4;
+		IMS_CAL_FITTED_VALUE_RANGE_ERROR = 5;
+    };
+
+    optional CCSCalResult status = 1;                       //    CCS Calibration status
+    optional double a = 2;                                  //    IMS calibration coefficient
+    optional double b = 3;                                  //    IMS calibration exponent
+    optional double t0 = 4;                                 //    IMS calibration offset
+    optional double rms_err = 5;                            //    Root mean square percentage error
+    optional double r2 = 6;                                 //    R^2 coefficient of determination
+    optional uint32 num_matched_peaks = 7;
+    optional uint32 num_missing_peaks = 8;
+    optional uint32 num_rejected_peaks = 9;
+    repeated PeakData peakData = 10;
+    repeated AcceptanceResult acceptance_result = 11;       // list of acceptance results
+	optional double max_rccs_interval = 12;
+}
+
+message PeakData
+{
+    enum PeakState
+    {
+        MISSING = 0;
+        REJECTED = 1;
+        MATCHED = 2;
+    }
+
+    optional PeakState state = 1;
+    optional double reference_mz = 2;               //    matched reference m/z value
+    optional double reference_rccs = 3;             //    matched reference reduced CCS value
+    optional double reference_ccs = 4;              //    matched reference CCS value
+    optional int32 reference_charge = 5 [default = 1];
+    optional double observed_mz = 6;                //    matched observed m/z value
+    optional double observed_time = 7;              //    matched observed times (milliseconds)
+    optional double observed_time_error_bar = 8;    //    matched observed times error bars (milliseconds)
+    optional double reference_ccs_as_time = 9;      //    matched reference CCS value mapped to mobility time (milliseconds)
+    optional double observed_time_as_ccs = 10;      //    matched mobility times calibrated back to CCS
+    optional double observed_time_as_rccs = 11;     //    matched observed reduced CCS value
+	optional double observed_time_bin = 12;
+	optional double observed_fwhm_bins = 13;
+	optional double observed_intensity = 14;
+}
+
+message MobilityCalibrationProcessingParameters
+{
+    optional double massWindowInPeakFWHM = 1;
+    optional string mobilityGasName = 2;
+    optional double mobilityGasAverageMass = 3;
+    optional double t0min = 4;
+    optional double t0max = 5;
+    optional double aMin = 6;
+    optional double aMax = 7;
+    optional double bMin = 8;
+    optional double bMax = 9;
+	optional double minimumDriftTimeErrorBar = 10 [default = 0.1];
+    repeated AcceptanceCriterion acceptanceCriteria = 11;
+	optional double maxReducedCCSInterval = 12;
+}
+
+enum CreationAction
+{
+    CREATION_AUTOMATIC = 0;
+    CREATION_MANUAL = 1;
+}
+
+message CalibrationConditions
+{
+    optional double start_mz = 1;
+    optional double end_mz = 2;
+    optional TofSettings tof_settings = 3;
+    optional QuadSettings quad_settings = 4;
+    repeated InstrumentMode modes = 5;
+    optional CreationAction creation_type = 6 [default = CREATION_AUTOMATIC];
+    optional Timestamp run_timestamp = 7;
+}
+
+message CCSCalibration
+{
+    optional CCSCalibrationData data = 1;
+    optional CCSCalibrationType type = 2;
+    optional MobilityPeakWidth peak_width = 3;
+    optional CalibrationConditions calibration_conditions = 4;
+}
+
+message CCSCalibrationOutcome
+{
+    optional CCSCalibration calibration = 1;
+    optional CCSCalibrationDiagnostics diagnostics = 2;
+}
+

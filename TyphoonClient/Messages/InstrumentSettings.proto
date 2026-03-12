@@ -1,0 +1,36 @@
+syntax = "proto2";
+package Waters.Control.Message;
+
+message InstrumentMode
+{
+	optional string name = 1;
+	optional string value = 2;
+}
+
+enum SettingRequestType { SPECIFIED_VALUE = 0; CURRENTLY_SET_VALUE = 1; MINIMUM = 2; MAXIMUM = 3; }
+
+message InstrumentSetting
+{
+	optional string name = 1;
+	optional VariantValue value = 2;
+	optional SettingRequestType request_type = 3 [default = SPECIFIED_VALUE];
+}
+
+message InstrumentSettingsBlock
+{
+	optional int32 id = 1;
+	repeated InstrumentMode mode = 3;
+	repeated InstrumentSetting setting = 4;
+}
+
+message MethodConditions
+{
+	repeated InstrumentSettingsBlock conditions = 1;
+}
+
+message VariantValue
+{
+	optional double double_value = 1;
+	optional string string_value = 2;
+	optional bytes encoded_value = 3;	// arbitary type
+}

@@ -1,0 +1,39 @@
+syntax = "proto2";
+package Waters.Control.Message;
+
+message KeyValue
+{
+	required string key = 1;
+	optional bytes value = 2;
+}
+
+message KeyValueList
+{
+	repeated KeyValue items = 1;
+}
+
+message KeyValueStoreSyncRequest
+{
+	required string room = 1;
+	optional bool persist = 2;
+}
+
+message KeyValueStorePut
+{
+	required string room = 1;
+	repeated KeyValue items = 2;
+}
+
+message KeyValueStoreClear
+{
+	optional string room = 1;
+	optional bool clear_all = 2;
+	optional bool close = 3;
+}
+
+message KeyValueUpdate
+{
+	required uint64 sequence_id = 1;
+	required string room = 2;
+	repeated KeyValue item = 3;
+}

@@ -1,0 +1,51 @@
+syntax = "proto2";
+package Waters.Control.Message;
+
+message ClientRequest
+{
+	required string Service = 1;
+	required string MessageId = 2;
+	optional bytes MessageData = 3;
+	optional string Tag = 4;
+}
+
+message QueueRequestInfo
+{
+	required string Service = 1;
+	required string MessageId = 2;
+	required string CompleteId = 3;
+	optional string YieldId = 4;
+	optional string AbortId = 5;
+}
+
+message LockRequest
+{
+	required string Tag = 1;
+}
+
+message LockResult
+{
+	enum LockState { LOCKED = 0; UNLOCKED = 1; REFUSED = 2; }
+	required LockState State = 1;
+	required string Tag = 2;
+}
+
+message RequestResult
+{
+	enum RequestState
+	{
+		OK = 0;
+		LOCKED = 1;
+		BUSY = 2;
+		INVALID_REQUEST = 3;
+	}
+
+	required string LockTag = 1;
+	required RequestState State = 2;
+	optional string Service = 3;
+}
+
+message HeartBeatInfo
+{
+	required string SenderInstanceId = 1;
+}

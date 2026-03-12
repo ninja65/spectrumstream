@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath></OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutputPath />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath></OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutputPath />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.2.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.12.3" />
+    <PackageReference Include="Google.Protobuf.Tools" Version="3.12.3" />
+    <PackageReference Include="NetMQ" Version="4.0.0.207" />
+    <PackageReference Include="Serilog" Version="2.5.0" />
+    <PackageReference Include="sharpcompress" Version="0.41.0" />
+    <PackageReference Include="SharpZipLib" Version="1.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="PrebuiltDlls\" />
+    <ContentWithTargetPath Include="PrebuiltDlls\win\*.*" Condition="'$(OS)' == 'Windows_NT'">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>TyphoonSDK\%(Filename)%(Extension)</TargetPath>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="PrebuiltDlls\linux\*.*" Condition="'$(OS)' == 'Unix'">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>TyphoonSDK\%(Filename)%(Extension)</TargetPath>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </ContentWithTargetPath>
+  </ItemGroup>
+  
+  
+  <Target Name="Protoc" BeforeTargets="BeforeBuild">
+    <ItemGroup>
+      <Protos Include="$(ProjectDir)Messages\*.proto" />
+    </ItemGroup>	
+    <MakeDir Directories="$(OutDir)Messages\Build\" />
+    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="&quot;$(NugetPackageRoot)\google.protobuf.tools\3.12.3\tools\windows_x64\protoc.exe&quot; --proto_path=$(ProjectDir)Messages\ --csharp_out=$(OutDir)Messages\Build\ --csharp_opt=file_extension=.g.cs @(Protos, ' ')" />
+    <Exec Condition="'$(OS)' == 'Unix'" Command="&quot;$(NugetPackageRoot)\google.protobuf.tools/3.12.3/tools/linux_x64/protoc&quot; --proto_path=$(ProjectDir)Messages/ --csharp_out=$(OutDir)Messages/Build/ --csharp_opt=file_extension=.g.cs @(Protos, ' ')" />
+  </Target>
+
+  <ItemGroup>
+    <Compile Include="$(OutDir)Messages\Build\Calibration.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+    <Compile Include="$(OutDir)Messages\Build\CCSCalibration.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+    <Compile Include="$(OutDir)Messages\Build\ClientMessages.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+    <Compile Include="$(OutDir)Messages\Build\DataStreamingMessages.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+    <Compile Include="$(OutDir)Messages\Build\DirectoryMessages.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+    <Compile Include="$(OutDir)Messages\Build\FunctionIndex.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+    <Compile Include="$(OutDir)Messages\Build\HardwareControlMessages.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+    <Compile Include="$(OutDir)Messages\Build\InstrumentSettings.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+    <Compile Include="$(OutDir)Messages\Build\KeyValue.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+    <Compile Include="$(OutDir)Messages\Build\Localisation.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+    <Compile Include="$(OutDir)Messages\Build\MethodReportMessages.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+    <Compile Include="$(OutDir)Messages\Build\MSMethodMessages.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+    <Compile Include="$(OutDir)Messages\Build\TimedEvent.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+    <Compile Include="$(OutDir)Messages\Build\Timestamp.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+    <Compile Include="$(OutDir)Messages\Build\TofSettings.g.cs" Link="Messages\Build\%(filename)%(extension)" />
+  </ItemGroup>
+
+</Project>

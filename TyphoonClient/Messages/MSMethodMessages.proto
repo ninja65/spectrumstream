@@ -1,0 +1,177 @@
+syntax = "proto2";
+package Waters.Control.Message;
+
+import "KeyValue.proto";
+import "InstrumentSettings.proto";
+import "TimedEvent.proto";
+
+enum MethodSources { None = 0; DataSystem = 1; }
+enum DDABranching { Evaluation = 0; Interrupt = 1; }
+
+// MSMethod is the input message to the MethodRunner, detailing what acquisition functions to run.
+message MSMethod
+{
+	optional MSMethodId id = 1;
+	optional MethodHeader header = 2;
+	repeated InstrumentMode mode = 3;
+	optional MethodTable initial_condition = 4;
+	repeated MSSetup preSetup = 5;
+	repeated MSSetup postSetup = 6;
+	repeated MSFunction function = 7;
+	repeated TimedEvent timed_event = 8;
+	repeated string tracked_parameter = 9;
+	optional MethodOptions options = 10;
+	optional KeyValueList metadata = 11;
+	repeated string method_script_name = 12;
+	optional AcquisitionDataStorage data_storage = 13;
+	optional MethodSources method_source = 14 [default = None];
+	optional Imaging imaging = 15;
+}
+
+message MSMethodDetails
+{
+	optional MSMethodId id = 1;
+	optional KeyValueList metadata = 2;
+}
+
+message MSMethodId
+{
+	optional string acquisition_id = 1;
+}
+
+message AcquisitionDataStorage
+{
+	required string filename = 1;
+	optional string type = 2 [default = "raw"];
+	optional bool include_setup_data = 3 [default = false];
+}
+
+message InitialConditions
+{
+	repeated InstrumentMode mode = 1;
+	repeated InstrumentSetting initial_condition = 2;
+}
+
+enum SetupType
+{
+   PRE_ACQUISITION = 0;
+   POST_ACQUISITION = 1;
+}
+
+message MSSetup
+{
+	required string type = 1;
+	optional string option = 2;
+	optional string acquisition_type = 3;
+	optional int32 setup_id = 4;
+	repeated InstrumentMode mode = 5;
+	optional MethodTable settings = 6;
+	optional MSMethod main_method = 7;
+	optional SetupType setup_context = 8 [default = PRE_ACQUISITION];
+	optional int64 main_method_trigger_time = 9;
+}
+
+message MSFunction
+{
+	required string type = 1;
+	optional RetentionWindow retention_window = 2;
+	repeated InstrumentMode mode = 3;
+	repeated MSInstance instance = 4;
+	optional KeyValueList metadata = 5;
+}
+
+message MSInstance
+{
+	optional MethodTable settings = 1;
+	repeated DDAInstance dda = 2;
+	optional KeyValueList metadata = 3;
+	repeated string function_script_name = 4;
+}
+
+message DDAInstance
+{
+	required string type = 1;
+	optional MethodTable settings = 2;
+	optional DDABranching interrupt_branching = 3 [default = Evaluation];
+}
+
+message MethodSetting
+{
+	optional string name = 1;
+	required VariantValue value = 2;
+	optional string mapping = 3;
+	optional bool mainonly = 4;
+}
+
+message MethodTable
+{
+	optional string name = 1;
+	repeated MethodSetting setting = 2;
+	repeated MethodTable table = 3;
+}
+
+message TimedEvent
+{
+	required TimedEventTiming timing = 1;
+	optional MSInterrupt interrupt = 2;
+	optional MethodTable settings = 3;
+}
+
+message MSInterrupt
+{
+	repeated MSFunction function = 1;
+	optional int32 repeat_count = 2 [default = 1];
+	optional double repeat_time = 3;
+}
+
+message RetentionWindow
+{
+	required double start_time = 1;
+	required double end_time = 2;
+}
+
+message MethodHeader
+{
+	optional int32 method_id = 1;
+	optional string instrument_type = 2;
+	optional string instrument_model = 3;
+	optional string version = 4;
+	optional int32 setup_id = 5;
+}
+
+message MethodOptions
+{
+	optional bool restore_state = 1 [default = true];
+	optional bool apply_calibration = 2 [default = true];
+	optional bool wait_for_datasystem = 3 [default = false];
+	optional bool disable_automatic_setups = 4 [default = false];
+}
+
+message MethodScript
+{
+	required string name = 1;
+	optional string script = 2;
+}
+
+message ModeUpdateRequest
+{
+	repeated InstrumentMode mode = 1;
+	optional uint32 MethodFunctionNumber = 2;
+}
+
+message MethodSource
+{
+	required MethodSources methodSource = 1 [default = None];
+}
+
+message Imaging
+{
+	required string type = 1;
+	repeated ImagePattern pattern = 2;
+}
+
+message ImagePattern
+{
+	required string type = 1;
+	optional MethodTable settings = 2;
+}

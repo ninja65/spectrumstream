@@ -1,0 +1,81 @@
+{
+	"DemoMode": "",
+	"DataDirectory": "data",
+	"StoreScanData": true,
+	"StoreDataType": "raw",
+	"EnableRemoteData": true,
+	"MetricsUrl": "http://192.168.0.1:5001/CovidData",
+	"AutoFluidics": true,
+	"IdleFlowRate": 5,
+	"MinimumFluidicsVolume": 20,
+	"Acquisition": {
+		"Type": "MS",
+		"Polarity": "Negative",
+		"StartMass": 50,
+		"EndMass": 1100,
+		"ScanTime": 1,
+		"RunTime": 30,
+		"FlowRate": 30
+	},
+	"DiagnosticModel": {
+		"ModelFile": "models/CovidModel.zip",
+		"Processing": {
+			"CombinedTICThreshold": 0,
+			"LockMassIntensityThreshold": 0,
+			"MinimumGoodScans": 4,
+			"MinimumPeakCount": 1000,
+			"WithOutlierDetection": true,
+			"MultiplierForOutlierDetection": 5,
+			"ProbabilityThreshold": 0
+		},
+		"ScanValidation": {
+			"Enabled": true,
+			"UseAdaptiveBackgroundSubtract": true,
+			"ScanTICThreshold": 10000,
+			"MaxAllowedMisses": 3,
+			"AcceptedPercentile": 95,
+			"SignalToNoiseRatio": 20,
+			"ExpectedPeaks": [
+				{ "Mass": 279.228 },
+				{ "Mass": 281.244 },
+				{ "Mass": 303.229 },
+				{ "Mass": 375.226 },
+				{ "Mass": 380.711 },
+				{ "Mass": 436.28 },
+				{ "Mass": 478.291 },
+				{ "Mass": 572.479 },
+				{ "Mass": 574.482 },
+				{ "Mass": 722.511 },
+				{ "Mass": 742.54 },
+				{ "Mass": 750.543 },
+				{ "Mass": 751.548 },
+				{ "Mass": 773.529 },
+				{ "Mass": 788.541 },
+				{ "Mass": 792.542 },
+				{ "Mass": 861.553 },
+				{ "Mass": 887.562 }
+			]
+		}
+	},
+	"QCModel": {
+		"ModelFile": "models/CovidModel.zip",
+		"Processing": {
+			"CombinedTICThreshold": 0,
+			"LockMassIntensityThreshold": 0,
+			"MinimumGoodScans": 4,
+			"MinimumPeakCount": 1000,
+			"WithOutlierDetection": true,
+			"MultiplierForOutlierDetection": 5,
+			"ProbabilityThreshold": 0
+		},
+		"ScanValidation": {
+			"Enabled": true,
+			"UseAdaptiveBackgroundSubtract": true,
+			"ScanTICThreshold": 10000,
+			"MaxAllowedMisses": 3,
+			"AcceptedPercentile": 95,
+			"SignalToNoiseRatio": 20,
+			"ExpectedPeaks": []
+		}
+	}
+}

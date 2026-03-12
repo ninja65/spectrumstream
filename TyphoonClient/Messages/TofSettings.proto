@@ -1,0 +1,20 @@
+syntax = "proto2";
+package Waters.Control.Message;
+
+message TofSettings
+{
+	optional double Lteff = 1;
+	optional double Veff =  2;
+	optional double ADCFrequency = 3;
+	optional double T0 = 4;
+	optional double PusherPeriod_us = 5;	// period in microseconds
+	optional double AverageIonArea = 6;
+	optional double AverageIonAreaMz = 7 [default = 556.2766];
+	optional int32  AverageIonAreaCharge = 8 [default = 1];
+}
+
+message QuadSettings
+{
+	optional double MassStep = 1;
+	optional double MassOffset = 2;
+}

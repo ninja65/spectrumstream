@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ComponentGroup Id="TyphoonSDK" Directory="TYPHOONSDK">
+  <Component Id="compTyphoonSDK1" Guid="d9e8bddd-c1fb-42d1-946b-b36cb25e91c2" Win64="yes">
+    <File DiskId="1" Id="fileTyphoonSDK1" Name="libzmq-v142-mt-4_3_2.dll" Source="$(var.TYPHOON_BINARIES_FOLDER)libzmq-v142-mt-4_3_2.dll" />
+  </Component>
+  <Component Id="compTyphoonSDK2" Guid="a1c459f8-9850-4192-b1b8-0b197fedf7a2" Win64="yes">
+    <File DiskId="1" Id="fileTyphoonSDK2" Name="lua.dll" Source="$(var.TYPHOON_BINARIES_FOLDER)lua.dll" />
+  </Component>
+  <Component Id="compTyphoonSDK3" Guid="312c6c5d-642b-4759-b5e5-05f74ced56cd" Win64="yes">
+    <File DiskId="1" Id="fileTyphoonSDK3" Name="messages.dll" Source="$(var.TYPHOON_BINARIES_FOLDER)messages.dll" />
+  </Component>
+  <Component Id="compTyphoonSDK4" Guid="47eef7c4-90c6-4836-9f14-08b643c01860" Win64="yes">
+    <File DiskId="1" Id="fileTyphoonSDK4" Name="mlrwsdk.dll" Source="$(var.TYPHOON_BINARIES_FOLDER)mlrwsdk.dll" />
+  </Component>
+  <Component Id="compTyphoonSDK5" Guid="a89911c4-aa08-4a98-b23d-04e5fd4e4367" Win64="yes">
+    <File DiskId="1" Id="fileTyphoonSDK5" Name="PocoFoundation.dll" Source="$(var.TYPHOON_BINARIES_FOLDER)PocoFoundation.dll" />
+  </Component>
+  <Component Id="compTyphoonSDK6" Guid="1172fa3c-15bb-4ccd-b346-0567b3ecc951" Win64="yes">
+    <File DiskId="1" Id="fileTyphoonSDK6" Name="PocoJSON.dll" Source="$(var.TYPHOON_BINARIES_FOLDER)PocoJSON.dll" />
+  </Component>
+  <Component Id="compTyphoonSDK7" Guid="2565e9a3-5a5a-4dd5-8de4-c2dbb326885a" Win64="yes">
+    <File DiskId="1" Id="fileTyphoonSDK7" Name="PocoUtil.dll" Source="$(var.TYPHOON_BINARIES_FOLDER)PocoUtil.dll" />
+  </Component>
+  <Component Id="compTyphoonSDK8" Guid="6766a3c6-a35f-48f7-a204-1209ff646d85" Win64="yes">
+    <File DiskId="1" Id="fileTyphoonSDK8" Name="PocoXML.dll" Source="$(var.TYPHOON_BINARIES_FOLDER)PocoXML.dll" />
+  </Component>
+  <Component Id="compTyphoonSDK9" Guid="585ae177-b9bb-44c8-8a35-d97d9a0a14e8" Win64="yes">
+    <File DiskId="1" Id="fileTyphoonSDK9" Name="Waters.Library.BaseFramework.dll" Source="$(var.TYPHOON_BINARIES_FOLDER)Waters.Library.BaseFramework.dll" />
+  </Component>
+  <Component Id="compTyphoonSDK10" Guid="cae85ae0-2019-4e2b-83da-8351c7df749a" Win64="yes">
+    <File DiskId="1" Id="fileTyphoonSDK10" Name="Waters.Library.DeviceHistory.dll" Source="$(var.TYPHOON_BINARIES_FOLDER)Waters.Library.DeviceHistory.dll" />
+  </Component>
+  <Component Id="compTyphoonSDK11" Guid="1b2476ae-6645-4bf7-85d1-f14d5f4bdba2" Win64="yes">
+    <File DiskId="1" Id="fileTyphoonSDK11" Name="Waters.Library.FileUtilities.dll" Source="$(var.TYPHOON_BINARIES_FOLDER)Waters.Library.FileUtilities.dll" />
+  </Component>
+  <Component Id="compTyphoonSDK12" Guid="05fd36fa-00ef-4e78-8a79-9700753a37b1" Win64="yes">
+    <File DiskId="1" Id="fileTyphoonSDK12" Name="Waters.Library.MassLynxRaw.dll" Source="$(var.TYPHOON_BINARIES_FOLDER)Waters.Library.MassLynxRaw.dll" />
+  </Component>
+  <Component Id="compTyphoonSDK13" Guid="bba49a8a-3107-4eb0-86aa-fa3cba9ac13f" Win64="yes">
+    <File DiskId="1" Id="fileTyphoonSDK13" Name="Waters.Library.Maths.dll" Source="$(var.TYPHOON_BINARIES_FOLDER)Waters.Library.Maths.dll" />
+  </Component>
+</ComponentGroup>

@@ -1,0 +1,36 @@
+syntax = "proto2";
+package Waters.Control.Message;
+
+import "Localisation.proto";
+import "InstrumentSettings.proto";
+
+message MSFunctionIndex
+{
+	optional int32 index = 1;
+	optional LocalisedText function_type = 2;
+	repeated InstrumentMode modes = 3;
+}
+
+message ActiveFunctions
+{
+	repeated MSFunctionIndex function = 1;
+}
+
+message AcquisitionStatus
+{
+	required string AcquiringStatus = 1;
+}
+
+message MethodFunctionKeyMap
+{
+	repeated MethodFunctionKeyMapItem Item = 1;
+}
+
+message MethodFunctionKeyMapItem
+{
+	required uint32 FunctionKey = 1;
+	optional uint32 MethodFunctionNumber = 2;
+	optional uint32 MethodInstanceNumber = 3;
+	required string FunctionType = 4;
+	repeated string FunctionTag = 5;
+}
