@@ -9,5 +9,7 @@ namespace AmbiMass.SpectrumStream.Data.RealtimeData
     public class ScanCompleted
     {
         public int scanId{ get; set; }
+
+        public string timeStamp{ get; set; }
     }
 }

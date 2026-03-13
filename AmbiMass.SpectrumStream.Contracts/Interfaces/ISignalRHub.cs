@@ -12,5 +12,7 @@ namespace AmbiMass.SpectrumStream.Contracts.Interfaces
         Task scanChunk(ScanChunk scanChunk);
         Task scanCompleted(ScanCompleted scanCompleted);
         Task scanStarted( ScanStarted scanStarted );
+        
+        Task scanFailed(ScanFailed scanFailed );
     }
 }

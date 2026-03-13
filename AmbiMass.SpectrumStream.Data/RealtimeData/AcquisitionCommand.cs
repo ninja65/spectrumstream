@@ -8,10 +8,6 @@ namespace AmbiMass.SpectrumStream.Data.RealtimeData
 {
     public class AcquisitionCommand
     {
-        public AcquisitionCommand() { }
-
         public string? MSSettingsFile{ get;set;}
-
-        public string? DateFile{ get; set; }
     }
 }

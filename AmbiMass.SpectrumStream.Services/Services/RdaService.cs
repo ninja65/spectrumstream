@@ -169,15 +169,6 @@ namespace AmbiMass.SpectrumStream.Services.Services
             {                 
                 try
                 {
-                    TyphoonFactory.Instance.SystemManager.Shutdown();
-                }
-                catch( Exception exShutdown )
-                {
-                    _logger?.LogError( exShutdown, "Typhoon shutdown failed" );
-                }
-
-                try
-                {
                     _typhoonSystem?.Dispose();
                 }
                 catch( Exception exDispose )

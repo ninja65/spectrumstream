@@ -42,6 +42,11 @@ namespace AmbiMass.SpectrumStream.Utils.SysEnv
             return DateTime.Now;
         }
 
+        public DateTime getCurrentTimeUtc()
+        {
+            return DateTime.UtcNow;
+        }
+
         public string getParentFolder(string filePath)
         {
             return Directory.GetParent(filePath).FullName;

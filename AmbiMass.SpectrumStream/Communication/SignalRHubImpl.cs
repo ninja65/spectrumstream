@@ -33,5 +33,10 @@ namespace AmbiMass.SpectrumStream.Communication
             return _hub.Clients.All.scanStarted( scanStarted );
         }
 
+        public Task scanFailed(ScanFailed scanFailed )
+        {
+            return _hub.Clients.All.scanFailed( scanFailed );
+        }
+
     }
 }

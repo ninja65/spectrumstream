@@ -32,5 +32,7 @@ namespace AmbiMass.SpectrumStream.Contracts.Interfaces
         Stream createStream(string fileUrl);
 
         string fullPathFromExe(string path);
+
+        DateTime getCurrentTimeUtc();
     }
 }
